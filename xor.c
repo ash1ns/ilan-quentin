@@ -62,6 +62,7 @@ int main()
     
     init();
     feed_foward();
+    printf("MAKE OK");
     return EXIT_SUCCESS;
 }
 
