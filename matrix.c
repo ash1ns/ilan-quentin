@@ -149,7 +149,7 @@ void printMatrix(float arr[], size_t row, size_t col)
     {
         for (size_t j = 0; j < col; j++)
         {
-            printf("%lf ", arr[i * col + j]);
+            printf("%f ", arr[i * col + j]);
         }
         printf("\n");
     }

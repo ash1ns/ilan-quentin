@@ -55,20 +55,45 @@ void get_error()
 void feed_backward()
 {
     float delta_weight_ho[2];
-    //float delta_weight_ih[4];
+    float delta_weight_ih[4];
     float temp[1]; 
     float temp_derivative[1];
-    float one_col_matrix[] = {1};
-    float hidden_tr[2]; 
-    multiplyByScalar(learning_rate,temp,1,1,error_output,1,1); // temp <- learning_rate*error_output
-    subtract(temp_derivative,1,1,one_col_matrix,1,1,output,1,1); // temp_derivative <- 1 - output
-    elementWise(temp_derivative,1,1,output,1,1,temp_derivative,1,1); //temp_derivative <- el_wise(output,temp_derivative)
-    elementWise(temp,1,1,temp,1,1,temp_derivative,1,1); // temp <- el_wise(temp, temp_derivative)
+    /****   * matrix product
+            . matrix element wise
+            + matrix addition
+    ****/
+    
+    //delta_weights_ho = (learning_rate * error_output) . (ouput . (1 - output)) * hidden_tr
+    multiplyByScalar(learning_rate,temp,1,1,error_output,1,1); // temp <- learning_rate * error_output
+    float one_col_matrix_ho[] = {1};
+    subtract(temp_derivative,1,1,one_col_matrix_ho,1,1,output,1,1); // temp_derivative <- 1 - output
+    elementWise(temp_derivative,1,1,output,1,1,temp_derivative,1,1); //temp_derivative <- output . temp_derivative
+    elementWise(temp,1,1,temp,1,1,temp_derivative,1,1); // temp <- temp . temp_derivative
+    float hidden_tr[2];//output transposed
     transpose(hidden_tr,1,2,hidden,2,1);
     multiply(delta_weight_ho,1,2,temp,1,1,hidden_tr,1,2); // delta_weight_ho <- temp * hidden_tr
-    printMatrix(weights_ho,1,2);
-    add(weights_ho,1,2,weights_ho,1,2,delta_weight_ho,1,2); // weights_ho <- delta_weight_ho = weights_ho
-    printMatrix(weights_ho,1,2);
+    //puts("weights_ho");
+    //printMatrix(weights_ho,1,2);
+    add(weights_ho,1,2,weights_ho,1,2,delta_weight_ho,1,2); // weights_ho <- delta_weight_ho + weights_ho
+    //puts("upgrade weights_ho");
+    //printMatrix(weights_ho,1,2);
+    
+    //delta_weights_ih = (learning_rate * error_hidden) . (hidden . (1 - hidden)) * input_tr
+    multiplyByScalar(learning_rate,temp,2,1,error_hidden,2,1); // temp <- learning_rate * error_hidden
+    float one_col_matrix_ih[] = {1, 1};
+    subtract(temp_derivative,2,1,one_col_matrix_ih,2,1,hidden,2,1); // temp_derivative <- 1 - hidden
+    elementWise(temp_derivative,2,1,hidden,2,1,temp_derivative,2,1); //temp_derivative <- hidden . temp_derivative
+    elementWise(temp,2,1,temp,2,1,temp_derivative,2,1); // temp <- temp . temp_derivative
+    float inputs_tr[2];//input transposed 
+    transpose(inputs_tr,1,2,inputs,2,1);
+    multiply(delta_weight_ih,2,2,temp,2,1,inputs_tr,1,2); // delta_weight_ih <- temp * inputs_tr
+    puts("weights_ih");
+    printMatrix(weights_ih,2,2);
+    puts("delta_weights_ih");
+    printMatrix(delta_weight_ih,2,2);
+    add(weights_ih,2,2,weights_ih,2,2,delta_weight_ih,2,2); // weights_ih <- delta_weight_ih + weights_ih
+    puts("upgrade weights_ih");
+    printMatrix(weights_ih,2,2);
 }
 
 int main()
