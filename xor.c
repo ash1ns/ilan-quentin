@@ -19,10 +19,11 @@ float bias_output[1];
 float error_output[1];
 float error_hidden[2];
 
-float learning_rate = 0.15;
+float learning_rate = 0.2;
 
 void init()
 {
+    srand(time(NULL));
     initMatrix(weights_ih,2,2); //weigths inputs -> hidden
     initMatrix(weights_ho,1,2); //weigths hidden -> output
     initMatrix(bias_hidden,2,1);
@@ -97,87 +98,60 @@ void feed_backward()
     
 }
 
-struct training_data 
-{
-    float inputs[2];
-    float target[1];
-}; 
-
-struct training_data data0;
-struct training_data data1;
-struct training_data data2;
-struct training_data data3;
- 
-void choose_inputs_target()
-{
-    data0.inputs[0] = 0; 
-    data0.inputs[1] = 0; 
-    data0.target[0] = 0;
-
-    data1.inputs[0] = 0; 
-    data1.inputs[1] = 1; 
-    data1.target[0] = 1;
-    
-    data2.inputs[1] = 1; 
-    data2.inputs[1] = 0; 
-    data2.target[0] = 1;
-    
-    data3.inputs[1] = 1; 
-    data3.inputs[1] = 1; 
-    data3.target[0] = 0;
-    
-    srand(time(NULL));    
-    
-    int rdm = rand()%5;
-    switch (rdm)
-    {
-        case 0:
-            copy(inputs,2,1,data0.inputs,2,1);
-            copy(target,1,1,data0.target,1,1);
-            break;
-        case 1:
-            copy(inputs,2,1,data1.inputs,2,1);
-            copy(target,1,1,data1.target,1,1);
-            break;
-        case 2:
-            copy(inputs,2,1,data2.inputs,2,1);
-            copy(target,1,1,data2.target,1,1);
-            break;
-        case 3:
-            copy(inputs,2,1,data3.inputs,2,1);
-            copy(target,1,1,data3.target,1,1);
-            break;
-    }
-}
-
 void train()
 {
     unsigned long time;
     puts("How many iterations ?");
     scanf("%lu",&time);
+   
+    inputs[0] = 0;
+    inputs[1] = 1;
+    target[0] = 1;
     for (unsigned long ite = 0; ite < time; ite++)
     {
-        choose_inputs_target(); //input & target initialize
         feed_forward();
         feed_backward();
-        printf("ite : %lu || error : ",ite);
-        printMatrix(error_output,1,1);
+        //printMatrix(error_output,1,1);
+        inputs[0] = (float)(rand() % 2);
+        inputs[1] = (float)(rand() % 2);
+        if (inputs[0] == inputs[1])
+            target[0] = 0;
+        else
+            target[0] = 1;
     }
 }
-
 int main()
 {
     init();
     train();
-    int arg1;
-    int arg2;
-    puts("arg1?");
-    scanf("%d",&arg1);
-    puts("arg2?");
-    scanf("%d",&arg2);
-    inputs[0] = (float)arg1;
-    inputs[1] = (float)arg2;
+    
+    float tmp1_inputs[2] = {0, 0};
+    copy(inputs,2,1,tmp1_inputs,2,1); 
+    printMatrix(inputs,2,1);
     feed_forward();
     printMatrix(output,1,1);
+    printf("\n");
+    
+    float tmp2_inputs[2] = {0, 1};
+    copy(inputs,2,1,tmp2_inputs,2,1); 
+    printMatrix(inputs,2,1);
+    feed_forward();
+    printMatrix(output,1,1);
+    printf("\n");
+    
+    float tmp3_inputs[2] = {1, 0};
+    copy(inputs,2,1,tmp3_inputs,2,1); 
+    printMatrix(inputs,2,1);
+    feed_forward();
+    printMatrix(output,1,1);
+    printf("\n");
+    
+    float tmp4_inputs[2] = {1, 1};
+    copy(inputs,2,1,tmp4_inputs,2,1); 
+    printMatrix(inputs,2,1);
+    feed_forward();
+    printMatrix(output,1,1);
+    printf("\n");
+    
     return EXIT_SUCCESS;
 }

@@ -143,19 +143,17 @@ void transpose(float res[], size_t res_row, size_t res_col, float arr[], size_t 
 //Init a matrix randomly
 void initMatrix(float arr[], size_t row, size_t col)
 {
-    srand(time(NULL));
+    float random;
+    float neg_random;
     for (size_t i = 0; i < row; i++)
     {
         for (size_t j = 0; j < col; j++)
         {
-            float random = (float)(rand()%(100));
-            float neg_random = (float)(rand()%2);
-            if (neg_random == 0) 
-            {
+            random = (float)(rand() % 100);
+            neg_random = rand() % 2;//0 for -1 and 1 for 1
+            if (neg_random == 0)
                 neg_random = -1;
-            }
-            random = (random / 100.0) * neg_random;
-            arr[i * col + j] = random; 
+            arr[i * col + j] = (float)(random * neg_random / 100.0);
         }
     }
 }
