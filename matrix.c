@@ -2,11 +2,23 @@
 #include <stdio.h>
 #include <err.h>
 #include <math.h>
-
+#include <time.h>
 //arr[row * nbColumn + column]
-//Verifie type
-//arr1 = arr1 + arr2
 
+void copy(float res[], size_t res_row, size_t res_col, float arr[], size_t arr_row, size_t arr_col)
+{
+    if (arr_col != res_col || res_row != arr_row)
+        errx(1,"copy -> Wrong size!");
+    for (size_t i = 0; i < res_row; i++)
+    {
+        for (size_t j = 0; j < res_row; j++)
+        {
+            res[i * res_col + j] = arr[i * arr_col + j];
+        }
+    }   
+}
+
+//arr1 = arr1 + arr2
 void add(float res[], size_t res_row, size_t res_col, float arr1[], size_t arr1_row, size_t arr1_col, float arr2[], size_t arr2_row, size_t arr2_col)
 {
     if (arr1_row != arr2_row || arr1_col != arr2_col || res_row != arr1_row || res_col != arr1_col)
@@ -131,12 +143,18 @@ void transpose(float res[], size_t res_row, size_t res_col, float arr[], size_t 
 //Init a matrix randomly
 void initMatrix(float arr[], size_t row, size_t col)
 {
+    srand(time(NULL));
     for (size_t i = 0; i < row; i++)
     {
         for (size_t j = 0; j < col; j++)
         {
             float random = (float)(rand()%(100));
-            random = random / 100.0;
+            float neg_random = (float)(rand()%2);
+            if (neg_random == 0) 
+            {
+                neg_random = -1;
+            }
+            random = (random / 100.0) * neg_random;
             arr[i * col + j] = random; 
         }
     }
