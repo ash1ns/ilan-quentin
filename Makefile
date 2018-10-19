@@ -19,7 +19,7 @@ main: ${OBJ}
 clean:
 	${RM} ${OBJ}   # remove object files
 	${RM} ${DEP}   # remove dependency files
-	${RM} xor     # remove main program
+	${RM} main     # remove main program
 
 
 # END
