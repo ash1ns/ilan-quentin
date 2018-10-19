@@ -26,7 +26,7 @@ void init()
     srand(time(NULL));
     initMatrix(weights_ih,2,2); //weigths inputs -> hidden
     initMatrix(weights_ho,1,2); //weigths hidden -> output
-    initMatrix(bias_hidden,2,1);
+    initMatrix(bias_hidden,2,1); 
     initMatrix(bias_output,1,1);
 }
 
@@ -46,10 +46,10 @@ void feed_forward()
 void get_error()
 {
     float weights_ho_tr[2];
-    //(calcul of output error : e1)
+    //calcul of output error : error_output = target - output
     subtract(error_output,1,1,target,1,1,output,1,1);
     
-    //(calcul of hidden layers errors : eh1 and eh2)
+    //(calcul of hidden layers errors : error_hidden = weights_ho_tr * error_output
     transpose(weights_ho_tr,2,1,weights_ho,1,2);
     multiply(error_hidden,2,1,weights_ho_tr,2,1,error_output,1,1);
 }
@@ -72,7 +72,8 @@ void feed_backward()
     multiplyByScalar(learning_rate,gradient_ho,1,1,error_output,1,1); // gradient_ho <- learning_rate * error_output
     float one_col_matrix_ho[] = {1};
     subtract(gradient_derivative_ho,1,1,one_col_matrix_ho,1,1,output,1,1); // gradient_derivative <- 1 - output
-    elementWise(gradient_derivative_ho,1,1,output,1,1,gradient_derivative_ho,1,1); //gradient_derivative_ho <- output . gradient_derivative_ho
+    elementWise(gradient_derivative_ho,1,1,output,1,1,gradient_derivative_ho,1,
+    1); //gradient_derivative_ho <- output . gradient_derivative_ho
     elementWise(gradient_ho,1,1,gradient_ho,1,1,gradient_derivative_ho,1,1); // gradient_ho <- gradient_ho . gradient_derivative_ho
     float hidden_tr[2];//output transposed
     transpose(hidden_tr,1,2,hidden,2,1);
@@ -86,7 +87,8 @@ void feed_backward()
     multiplyByScalar(learning_rate,gradient_ih,2,1,error_hidden,2,1); // gradient)_ih <- learning_rate * error_hidden
     float one_col_matrix_ih[] = {1, 1};
     subtract(gradient_derivative_ih,2,1,one_col_matrix_ih,2,1,hidden,2,1); // gradient_derivative_ih <- 1 - hidden
-    elementWise(gradient_derivative_ih,2,1,hidden,2,1,gradient_derivative_ih,2,1); //gradient_derivative_ih <- hidden . gradient_derivative_ih
+    elementWise(gradient_derivative_ih,2,1,hidden,2,1,gradient_derivative_ih,2,
+    1); //gradient_derivative_ih <- hidden . gradient_derivative_ih
     elementWise(gradient_ih,2,1,gradient_ih,2,1,gradient_derivative_ih,2,1); // gradient_ih <- gradient_ih . gradient_derivative_ih
     float inputs_tr[2];//input transposed 
     transpose(inputs_tr,1,2,inputs,2,1);
@@ -111,16 +113,15 @@ void train()
     {
         feed_forward();
         feed_backward();
-        //printMatrix(error_output,1,1);
-        inputs[0] = (float)(rand() % 2);
+        inputs[0] = (float)(rand() % 2);//pick random inputs
         inputs[1] = (float)(rand() % 2);
-        if (inputs[0] == inputs[1])
+        if (inputs[0] == inputs[1])//set the target
             target[0] = 0;
         else
             target[0] = 1;
     }
 }
-int main()
+void xor()
 {
     init();
     train();
@@ -151,7 +152,5 @@ int main()
     printMatrix(inputs,2,1);
     feed_forward();
     printMatrix(output,1,1);
-    printf("\n");
-    
-    return EXIT_SUCCESS;
+    printf("\n");   
 }

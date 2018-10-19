@@ -5,7 +5,8 @@
 #include <time.h>
 //arr[row * nbColumn + column]
 
-void copy(float res[], size_t res_row, size_t res_col, float arr[], size_t arr_row, size_t arr_col)
+void copy(float res[], size_t res_row, size_t res_col, float arr[], size_t 
+arr_row, size_t arr_col)
 {
     if (arr_col != res_col || res_row != arr_row)
         errx(1,"copy -> Wrong size!");
@@ -19,9 +20,11 @@ void copy(float res[], size_t res_row, size_t res_col, float arr[], size_t arr_r
 }
 
 //arr1 = arr1 + arr2
-void add(float res[], size_t res_row, size_t res_col, float arr1[], size_t arr1_row, size_t arr1_col, float arr2[], size_t arr2_row, size_t arr2_col)
+void add(float res[], size_t res_row, size_t res_col, float arr1[], size_t 
+arr1_row, size_t arr1_col, float arr2[], size_t arr2_row, size_t arr2_col)
 {
-    if (arr1_row != arr2_row || arr1_col != arr2_col || res_row != arr1_row || res_col != arr1_col)
+    if (arr1_row != arr2_row || arr1_col != arr2_col || res_row != arr1_row || 
+    res_col != arr1_col)
     {	
          errx(1,"add -> Wrong size!");
     }
@@ -30,15 +33,18 @@ void add(float res[], size_t res_row, size_t res_col, float arr1[], size_t arr1_
     {
         for (size_t col = 0; col < res_col; col++)
 	{
-            res[row * res_col + col] = arr1[row * arr1_col + col] + arr2[row * arr2_col + col];
+            res[row * res_col + col] = arr1[row * arr1_col + col] 
+            + arr2[row * arr2_col + col];
     	}
     }
 }
 
 //res = arr1 - arr2
-void subtract(float res[], size_t res_row, size_t res_col, float arr1[], size_t arr1_row, size_t arr1_col, float arr2[], size_t arr2_row, size_t arr2_col)
+void subtract(float res[], size_t res_row, size_t res_col, float arr1[], size_t
+arr1_row, size_t arr1_col, float arr2[], size_t arr2_row, size_t arr2_col)
 {
-    if (arr1_row != arr2_row || arr1_col != arr2_col || res_row != arr1_row || res_col != arr1_col)
+    if (arr1_row != arr2_row || arr1_col != arr2_col || res_row != arr1_row || 
+    res_col != arr1_col)
     {	
          errx(1,"subtract -> Wrong size!");
     }
@@ -47,13 +53,15 @@ void subtract(float res[], size_t res_row, size_t res_col, float arr1[], size_t 
     {
         for (size_t col = 0; col < res_col; col++)
 	{
-            res[row * res_col + col] = arr1[row * arr1_col + col] - arr2[row * arr2_col + col];
+            res[row * res_col + col] = arr1[row * arr1_col + col] 
+            - arr2[row * arr2_col + col];
     	}
     }
 }
 
 //res = arr1 * lr
-void multiplyByScalar(float k, float res[], size_t res_row, size_t res_col, float arr[], size_t arr_row, size_t arr_col)
+void multiplyByScalar(float k, float res[], size_t res_row, size_t res_col, 
+float arr[], size_t arr_row, size_t arr_col)
 {
     if (arr_col != res_col || res_row != arr_row)
     {
@@ -69,7 +77,8 @@ void multiplyByScalar(float k, float res[], size_t res_row, size_t res_col, floa
 }
 
 //res = arr1 * arr2
-void multiply(float res[], size_t res_row, size_t res_col, float arr1[], size_t arr1_row, size_t arr1_col, float arr2[], size_t arr2_row, size_t arr2_col)
+void multiply(float res[], size_t res_row, size_t res_col, float arr1[], size_t
+arr1_row, size_t arr1_col, float arr2[], size_t arr2_row, size_t arr2_col)
 {
     if (arr1_col != arr2_row || res_row != arr1_row || res_col != arr2_col)
     {
@@ -89,9 +98,12 @@ void multiply(float res[], size_t res_row, size_t res_col, float arr1[], size_t 
     }
 }
 
-void elementWise(float res[], size_t res_row, size_t res_col, float arr1[], size_t arr1_row, size_t arr1_col, float arr2[], size_t arr2_row, size_t arr2_col)
+void elementWise(float res[], size_t res_row, size_t res_col, float arr1[], 
+size_t arr1_row, size_t arr1_col, float arr2[], size_t arr2_row, size_t 
+arr2_col)
 {
-    if (arr1_row != arr2_row || arr1_col != arr2_col || res_row != arr1_row || res_col != arr1_col)
+    if (arr1_row != arr2_row || arr1_col != arr2_col || res_row != arr1_row || 
+    res_col != arr1_col)
     {	
          errx(1,"element wise -> Wrong size!");
     }
@@ -100,12 +112,13 @@ void elementWise(float res[], size_t res_row, size_t res_col, float arr1[], size
     {
         for (size_t col = 0; col < res_col; col++)
 	{
-            res[row * res_col + col] = arr1[row * arr1_col + col] * arr2[row * arr2_col + col];
+            res[row * res_col + col] = arr1[row * arr1_col + col] 
+            * arr2[row * arr2_col + col];
     	}
     }
 }
 
-//Declare the activation function we use
+//Acitvation function (sigmoid)
 float sigmoid(float input) {
     return 1 / (1 + exp(-input)); 
 }
@@ -124,7 +137,8 @@ void sigmoid_arr(float arr[], size_t row, size_t col)
 }
 
 //res = transpose(arr)
-void transpose(float res[], size_t res_row, size_t res_col, float arr[], size_t arr_row, size_t arr_col)
+void transpose(float res[], size_t res_row, size_t res_col, float arr[], size_t
+arr_row, size_t arr_col)
 {
     if (res_row != arr_col || res_col != arr_row) 
     {
@@ -140,7 +154,7 @@ void transpose(float res[], size_t res_row, size_t res_col, float arr[], size_t 
 }
 
 
-//Init a matrix randomly
+//Init a matrix randomly ]-1.0, 1.0[
 void initMatrix(float arr[], size_t row, size_t col)
 {
     float random;

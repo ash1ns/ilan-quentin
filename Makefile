@@ -6,13 +6,13 @@ CFLAGS = -Wall -Wextra -std=c99 -O2
 LDFLAGS =
 LDLIBS = -lm
 
-SRC = xor.c matrix.c
+SRC = xor.c matrix.c main.c
 OBJ = ${SRC:.c=.o}
 DEP = ${SRC:.c=.d}
 
-all: xor
+all: main
 
-xor: ${OBJ}
+main: ${OBJ}
 
 .PHONY: clean
 
