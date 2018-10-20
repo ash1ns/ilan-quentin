@@ -63,7 +63,6 @@ void save_weights_bias()
 
 void init()
 {
-    srand(time(NULL));
     initMatrix(weights_ih,2,2); //weigths inputs -> hidden
     initMatrix(weights_ho,1,2); //weigths hidden -> output
     initMatrix(bias_hidden,2,1); 
@@ -140,34 +139,96 @@ void feed_backward()
     
 }
 
-void train()
+void train(unsigned long nb_iterations)
 {
-    unsigned long time;
-    puts("How many iterations ?");
-    scanf("%lu",&time);
-   
-    inputs[0] = 0;
-    inputs[1] = 1;
-    target[0] = 1;
-    for (unsigned long ite = 0; ite < time; ite++)
-    {
+    int i = 0;
+    do {
+        init();
+        inputs[0] = 0;
+        inputs[1] = 1;
+        target[0] = 1;
+        for (unsigned long ite = 0; ite < nb_iterations; ite++)
+        {
+            feed_forward();
+            feed_backward();
+            inputs[0] = (float)(rand() % 2);//pick random inputs
+            inputs[1] = (float)(rand() % 2);
+            if (inputs[0] == inputs[1])//set the target
+                target[0] = 0;
+            else
+                target[0] = 1;
+        }
+        int trainingHasWorked = 0;
+
+        inputs[0] = 0.0;
+        inputs[1] = 0.0;
         feed_forward();
-        feed_backward();
-        inputs[0] = (float)(rand() % 2);//pick random inputs
-        inputs[1] = (float)(rand() % 2);
-        if (inputs[0] == inputs[1])//set the target
-            target[0] = 0;
-        else
-            target[0] = 1;
-    }
+        if (output[0] > 0.2)//Not working do it again
+            trainingHasWorked += 1;
+
+        inputs[0] = 0.0;
+        inputs[1] = 1.0;
+        feed_forward();
+        if (output[0] < 0.8)//Not working do it again
+            trainingHasWorked += 1;
+
+        inputs[0] = 1.0;
+        inputs[1] = 0.0;
+        feed_forward();
+        if (output[0] < 0.8)//Not working do it again
+            trainingHasWorked += 1;
+
+
+        inputs[0] = 1.0;
+        inputs[1] = 1.0;
+        feed_forward();
+        if (output[0] > 0.2)//Not working do it again
+            trainingHasWorked += 1;
+
+        if (trainingHasWorked == 0)//Every check works
+        {
+            break;//quit the loop, end of the training
+        }
+        printf("train %i : error %i\n", i + 1, trainingHasWorked);
+        i += 1;
+    } while (i < 100);//while true
     save_weights_bias();
 }
 void xor()
 {
-    init();
-    train();
+    //train for the first time
+    unsigned long time;
+    puts("How many iterations ?");
+    scanf("%lu",&time); 
+    train(time);
     
-    float tmp1_inputs[2] = {0, 0};
+
+    //train until the good guess
+    inputs[0] = 0.0;
+    inputs[1] = 0.0;
+    feed_forward();
+    printf("0 xor 0 : ");
+    printMatrix(output,1,1);
+
+    inputs[0] = 0.0;
+    inputs[1] = 1.0;
+    feed_forward();
+    printf("0 xor 1 : ");
+    printMatrix(output,1,1);
+
+    inputs[0] = 1.0;
+    inputs[1] = 0.0;
+    feed_forward();
+    printf("1 xor 0 : ");
+    printMatrix(output,1,1);
+
+
+    inputs[0] = 1.0;
+    inputs[1] = 1.0;
+    feed_forward();
+    printf("0 xor 0 : ");
+    printMatrix(output,1,1);
+    /*float tmp1_inputs[2] = {0, 0};
     copy(inputs,2,1,tmp1_inputs,2,1); 
     printMatrix(inputs,2,1);
     feed_forward();
@@ -193,5 +254,5 @@ void xor()
     printMatrix(inputs,2,1);
     feed_forward();
     printMatrix(output,1,1);
-    printf("\n");   
+    printf("\n");*/ 
 }
