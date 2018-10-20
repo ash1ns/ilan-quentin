@@ -19,6 +19,7 @@ main: ${OBJ}
 clean:
 	${RM} ${OBJ}   # remove object files
 	${RM} ${DEP}   # remove dependency files
+	${RM} save_weights_bias/*   # remove dependency files
 	${RM} main     # remove main program
 
 

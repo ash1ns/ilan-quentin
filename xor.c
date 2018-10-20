@@ -21,6 +21,46 @@ float error_hidden[2];
 
 float learning_rate = 0.2;
 
+void save_weights_bias()
+{
+    int written = 0;
+    //save weights_ih in save_weights_bias/weights_ih.data
+    FILE *f0 = fopen("save_weights_bias/weights_ih.data", "w");
+    written = fwrite(weights_ih, sizeof(float), sizeof(weights_ih), f0);
+    if (written == 0) {
+        printf("Error during writing to file !");
+    }
+    fclose(f0);
+    
+    //save weights_ho in save_weights_bias/weights_ho.data
+    written = 0;
+    FILE *f1 = fopen("save_weights_bias/weights_ho.data", "w");
+    written = fwrite(weights_ho, sizeof(float), sizeof(weights_ho), f1);
+    if (written == 0) {
+        printf("Error during writing to file !");
+    }
+    fclose(f1);
+    
+    //save bias_hidden in save_weights_bias/bias_hidden.data
+    written = 0;
+    FILE *f2 = fopen("save_weights_bias/bias_hidden.data", "w");
+    written = fwrite(bias_hidden, sizeof(float), sizeof(bias_hidden), f2);
+    if (written == 0) {
+        printf("Error during writing to file !");
+    }
+    fclose(f2);
+    
+    //save bias_output in save_weights_bias/bias_output.data
+    written = 0;
+    FILE *f3 = fopen("save_weights_bias/bias_output.data", "w");
+    written = fwrite(bias_output, sizeof(float), sizeof(bias_output), f3);
+    if (written == 0) {
+        printf("Error during writing to file !");
+    }
+    fclose(f3);
+}
+
+
 void init()
 {
     srand(time(NULL));
@@ -120,6 +160,7 @@ void train()
         else
             target[0] = 1;
     }
+    save_weights_bias();
 }
 void xor()
 {
