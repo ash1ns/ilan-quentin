@@ -1,12 +1,12 @@
 # Makefile
 
-CPPFLAGS = -MMD
+CPPFLAGS = `pkg-config --cflags sdl` -MMD
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99 -O2
+CFLAGS = -Wall -Wextra -std=c99 -O3
 LDFLAGS =
-LDLIBS = -lm
+LDLIBS = `pkg-config --libs sdl` -lSDL_image -lm
 
-SRC = xor.c matrix.c main.c
+SRC = xor.c matrix.c main.c img_operations/all_img_op.c img_operations/display.c img_operations/grayscale_binarize.c img_operations/matrix_and_img.c img_operations/pixel_operations.c img_operations/segmentation.c
 OBJ = ${SRC:.c=.o}
 DEP = ${SRC:.c=.d}
 

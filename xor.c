@@ -200,10 +200,10 @@ void xor()
     unsigned long time;
     puts("How many iterations ?");
     scanf("%lu",&time); 
+    
+    //train until the good guess
     train(time);
     
-
-    //train until the good guess
     inputs[0] = 0.0;
     inputs[1] = 0.0;
     feed_forward();
@@ -228,31 +228,4 @@ void xor()
     feed_forward();
     printf("0 xor 0 : ");
     printMatrix(output,1,1);
-    /*float tmp1_inputs[2] = {0, 0};
-    copy(inputs,2,1,tmp1_inputs,2,1); 
-    printMatrix(inputs,2,1);
-    feed_forward();
-    printMatrix(output,1,1);
-    printf("\n");
-    
-    float tmp2_inputs[2] = {0, 1};
-    copy(inputs,2,1,tmp2_inputs,2,1); 
-    printMatrix(inputs,2,1);
-    feed_forward();
-    printMatrix(output,1,1);
-    printf("\n");
-    
-    float tmp3_inputs[2] = {1, 0};
-    copy(inputs,2,1,tmp3_inputs,2,1); 
-    printMatrix(inputs,2,1);
-    feed_forward();
-    printMatrix(output,1,1);
-    printf("\n");
-    
-    float tmp4_inputs[2] = {1, 1};
-    copy(inputs,2,1,tmp4_inputs,2,1); 
-    printMatrix(inputs,2,1);
-    feed_forward();
-    printMatrix(output,1,1);
-    printf("\n");*/ 
 }
