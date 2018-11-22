@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <err.h>
 #include <string.h>
-#include "xor.h"
+#include "xor/xor.h"
 #include <time.h>
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
