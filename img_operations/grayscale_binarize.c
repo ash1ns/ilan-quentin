@@ -1,5 +1,4 @@
 #include <err.h>
-#include <math.h>
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include "pixel_operations.h"
@@ -47,23 +46,20 @@ SDL_Surface* toGrayscale(SDL_Surface* image_surface)
 }
 
 
-
-
 //***********************
 //Binarize a SDL_Surface
 //***********************
 SDL_Surface* Binarize(SDL_Surface* image_surface)
 {
-
     Uint32 pixel;
     Uint8 r, g, b;
 
     int width = image_surface->w;
     int height = image_surface->h;
-   
+
     unsigned long sum = 0;
     Uint32 threshold;
-    
+
     //Calcul threshold
     for(int y = 0; y < height; y++)
     {
@@ -71,6 +67,7 @@ SDL_Surface* Binarize(SDL_Surface* image_surface)
 	{
     	    pixel = get_pixel(image_surface, x, y);	
     	    SDL_GetRGB(pixel, image_surface->format, &r, &g, &b);
+
             sum += r;
 	}
     }	
@@ -78,13 +75,12 @@ SDL_Surface* Binarize(SDL_Surface* image_surface)
     //No div by 0
     if(width*height != 0)
     {
-    	threshold = (sum / (width * height)) * 0.75 ;
+    	threshold = sum / (width * height) * 0.75;
     }
     else
     {
         errx(1, "Empty image");
     }
-    
 
     //Check if the pixel is white or black using threshold    
     for(int y = 0; y < height; y++)

@@ -88,7 +88,8 @@ void get_error()
     //calcul of output error : error_output = target - output
     subtract(error_output,1,1,target,1,1,output,1,1);
     
-    //(calcul of hidden layers errors : error_hidden = weights_ho_tr * error_output
+    //(calcul of hidden layers errors : error_hidden = weights_ho_tr * 
+    //error_output
     transpose(weights_ho_tr,2,1,weights_ho,1,2);
     multiply(error_hidden,2,1,weights_ho_tr,2,1,error_output,1,1);
 }
@@ -107,34 +108,47 @@ void feed_backward()
             + matrix addition
     ****/
     
-    //Calculate the delta_weights_ho = (learning_rate * error_output) . (ouput . (1 - output)) * hidden_tr
-    multiplyByScalar(learning_rate,gradient_ho,1,1,error_output,1,1); // gradient_ho <- learning_rate * error_output
+    //Calculate the delta_weights_ho = (learning_rate * error_output) . 
+    //(ouput . (1 - output)) * hidden_tr
+    // gradient_ho <- learning_rate * error_output
+    multiplyByScalar(learning_rate,gradient_ho,1,1,error_output,1,1); 
     float one_col_matrix_ho[] = {1};
-    subtract(gradient_derivative_ho,1,1,one_col_matrix_ho,1,1,output,1,1); // gradient_derivative <- 1 - output
+    // gradient_derivative <- 1 - output
+    subtract(gradient_derivative_ho,1,1,one_col_matrix_ho,1,1,output,1,1); 
+    //gradient_derivative_ho <- output . gradient_derivative_ho
     elementWise(gradient_derivative_ho,1,1,output,1,1,gradient_derivative_ho,1,
-    1); //gradient_derivative_ho <- output . gradient_derivative_ho
-    elementWise(gradient_ho,1,1,gradient_ho,1,1,gradient_derivative_ho,1,1); // gradient_ho <- gradient_ho . gradient_derivative_ho
+    1); 
+    // gradient_ho <- gradient_ho . gradient_derivative_ho
+    elementWise(gradient_ho,1,1,gradient_ho,1,1,gradient_derivative_ho,1,1); 
     float hidden_tr[2];//output transposed
     transpose(hidden_tr,1,2,hidden,2,1);
-    multiply(delta_weight_ho,1,2,gradient_ho,1,1,hidden_tr,1,2); // delta_weight_ho <- gradient_ho * hidden_tr
+    // delta_weight_ho <- gradient_ho * hidden_tr
+    multiply(delta_weight_ho,1,2,gradient_ho,1,1,hidden_tr,1,2); 
     
     //Update weights_ho, bias_ho (bias_output)
-    add(weights_ho,1,2,weights_ho,1,2,delta_weight_ho,1,2); // weights_ho <- delta_weight_ho + weights_ho
+    // weights_ho <- delta_weight_ho + weights_ho
+    add(weights_ho,1,2,weights_ho,1,2,delta_weight_ho,1,2); 
     add(bias_output,1,1,bias_output,1,1,gradient_ho,1,1);
 
-    //Calculate the delta_weights_ih = (learning_rate * error_hidden) . (hidden . (1 - hidden)) * input_tr
-    multiplyByScalar(learning_rate,gradient_ih,2,1,error_hidden,2,1); // gradient)_ih <- learning_rate * error_hidden
+    //Calculate the delta_weights_ih = (learning_rate * error_hidden)
+    //. (hidden . (1 - hidden)) * input_tr
+    // gradient)_ih <- learning_rate * error_hidden
+    multiplyByScalar(learning_rate,gradient_ih,2,1,error_hidden,2,1); 
     float one_col_matrix_ih[] = {1, 1};
-    subtract(gradient_derivative_ih,2,1,one_col_matrix_ih,2,1,hidden,2,1); // gradient_derivative_ih <- 1 - hidden
+    // gradient_derivative_ih <- 1 - hidden
+    subtract(gradient_derivative_ih,2,1,one_col_matrix_ih,2,1,hidden,2,1); 
     elementWise(gradient_derivative_ih,2,1,hidden,2,1,gradient_derivative_ih,2,
     1); //gradient_derivative_ih <- hidden . gradient_derivative_ih
-    elementWise(gradient_ih,2,1,gradient_ih,2,1,gradient_derivative_ih,2,1); // gradient_ih <- gradient_ih . gradient_derivative_ih
+    // gradient_ih <- gradient_ih . gradient_derivative_ih
+    elementWise(gradient_ih,2,1,gradient_ih,2,1,gradient_derivative_ih,2,1);
     float inputs_tr[2];//input transposed 
     transpose(inputs_tr,1,2,inputs,2,1);
-    multiply(delta_weight_ih,2,2,gradient_ih,2,1,inputs_tr,1,2); // delta_weight_ih <- gradient_ih * inputs_tr
+    // delta_weight_ih <- gradient_ih * inputs_tr
+    multiply(delta_weight_ih,2,2,gradient_ih,2,1,inputs_tr,1,2); 
     
     //Update of weights_ih, bias_ih (bias_hidden)
-    add(weights_ih,2,2,weights_ih,2,2,delta_weight_ih,2,2); // weights_ih <- delta_weight_ih + weights_ih
+    // weights_ih <- delta_weight_ih + weights_ih
+    add(weights_ih,2,2,weights_ih,2,2,delta_weight_ih,2,2); 
     add(bias_hidden,2,1,bias_hidden,2,1,gradient_ih,2,1);
     
 }
@@ -199,7 +213,13 @@ void xor()
     //train for the first time
     unsigned long time;
     puts("How many iterations ?");
-    scanf("%lu",&time); 
+
+    int scan = scanf("%lu",&time); 
+
+    while (scan == 0) 
+    {
+       scan = scanf("%lu",&time);
+    }
     
     //train until the good guess
     train(time);
@@ -226,6 +246,6 @@ void xor()
     inputs[0] = 1.0;
     inputs[1] = 1.0;
     feed_forward();
-    printf("0 xor 0 : ");
+    printf("1 xor 1 : ");
     printMatrix(output,1,1);
 }

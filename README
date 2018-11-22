@@ -1,0 +1,12 @@
+
+To create the executable file : make
+
+To run the xor neural network : ./main xor
+and give the number of iterations
+
+To run all the images operations : ./main [path to the image]
+For example : ./main images/text.bmp
+Press a key to go to the next step.
+
+
+ 
