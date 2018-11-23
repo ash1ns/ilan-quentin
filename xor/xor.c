@@ -25,74 +25,19 @@ float learning_rate = 0.2;
 void save_weights_bias()
 {
     save_matrix("xor/save_weights_bias/save_weights_ih.data", weights_ih, sizeof(weights_ih) / sizeof(float));
+}
+
+void get_weights_bias()
+{
     float *buffer = malloc(sizeof(weights_ih));
     get_matrix(buffer, "xor/save_weights_bias/save_weights_ih.data", sizeof(weights_ih) / sizeof(float));
     for (size_t i = 0; i < sizeof(weights_ih) / sizeof(float); i++)
     {
-        printf("%f\n", *(buffer + i));
+        weights_ih[i] = *(buffer + i);
     }
     free(buffer);
-    /*FILE *f0 = fopen("xor/save_weights_bias/weights_ih.data", "w");
-    float *buffer = weights_ih;
-    for (int i = 0; i < 4; i++)
-    {
-        printf("%f\n", *(buffer + i));
-    }
-    fwrite(buffer, sizeof(float), sizeof(weights_ih) / sizeof(float), f0);
-    fclose(f0);
-    FILE *f1 = fopen("xor/save_weights_bias/weights_ih.data", "r");
-    float *buffer2 = malloc(sizeof(weights_ih));
-    fread(buffer2, sizeof(float), sizeof(weights_ih) / sizeof(float), f1);
-    for (int i = 0; i < 4; i++)
-    {
-        printf("%f\n", *(buffe#ir2 + i));
-    }
-    fclose(f1);*/
 
-    /*int written  = 0;
-    //save weights_ih in xor/save_weights_bias/weights_ih.data
-    FILE *f0 = fopen("xor/save_weights_bias/weights_ih.data", "wr");
-    written = fwrite(weights_ih, sizeof(float), sizeof(weights_ih) / sizeof(float), f0);
-    if (written == 0) {
-        printf("Error during writing to file !");
-    }
-    float buffer[4] = {1, 2, 3, 4};
-    float *p = buffer;
-    int read = fread(p, sizeof(float), sizeof(weights_ih) / sizeof(float), f0);
-    for (int i = 0; i < 4; i++)
-    {
-        printf("%f\n", *(p + i));
-    }
-    fclose(f0);*/
-    /*
-    //save weights_ho in xor/save_weights_bias/weights_ho.data
-    int written = 0;
-    FILE *f1 = fopen("xor/save_weights_bias/weights_ho.data", "w");
-    written = fwrite(weights_ho, sizeof(float), sizeof(weights_ho), f1);
-    if (written == 0) {
-        printf("Error during writing to file !");
-    }
-    fclose(f1);
-    
-    //save bias_hidden in xor/save_weights_bias/bias_hidden.data
-    written = 0;
-    FILE *f2 = fopen("xor/save_weights_bias/bias_hidden.data", "w");
-    written = fwrite(bias_hidden, sizeof(float), sizeof(bias_hidden), f2);
-    if (written == 0) {
-        printf("Error during writing to file !");
-    }
-    fclose(f2);
-    
-    //save bias_output in xor/save_weights_bias/bias_output.data
-    written = 0;
-    FILE *f3 = fopen("xor/save_weights_bias/bias_output.data", "w");
-    written = fwrite(bias_output, sizeof(float), sizeof(bias_output), f3);
-    if (written == 0) {
-        printf("Error during writing to file !");
-    }
-    fclose(f3);*/
 }
-
 
 void init()
 {
@@ -240,6 +185,7 @@ void train(unsigned long nb_iterations)
         i += 1;
     } while (i < 100);//while true
     save_weights_bias();
+    get_weights_bias();
 }
 void xor()
 {
