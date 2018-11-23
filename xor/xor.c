@@ -4,6 +4,7 @@
 #include <math.h>
 #include "matrix.h"
 #include <time.h>
+#include "file.h"
 
 float inputs[2];
 float hidden[2];
@@ -23,7 +24,15 @@ float learning_rate = 0.2;
 
 void save_weights_bias()
 {
-    FILE *f0 = fopen("xor/save_weights_bias/weights_ih.data", "wr");
+    save_matrix("xor/save_weights_bias/save_weights_ih.data", weights_ih, sizeof(weights_ih) / sizeof(float));
+    float *buffer = malloc(sizeof(weights_ih));
+    get_matrix(buffer, "xor/save_weights_bias/save_weights_ih.data", sizeof(weights_ih) / sizeof(float));
+    for (size_t i = 0; i < sizeof(weights_ih) / sizeof(float); i++)
+    {
+        printf("%f\n", *(buffer + i));
+    }
+    free(buffer);
+    /*FILE *f0 = fopen("xor/save_weights_bias/weights_ih.data", "w");
     float *buffer = weights_ih;
     for (int i = 0; i < 4; i++)
     {
@@ -31,13 +40,14 @@ void save_weights_bias()
     }
     fwrite(buffer, sizeof(float), sizeof(weights_ih) / sizeof(float), f0);
     fclose(f0);
+    FILE *f1 = fopen("xor/save_weights_bias/weights_ih.data", "r");
     float *buffer2 = malloc(sizeof(weights_ih));
-    fread(buffer2, sizeof(float), sizeof(weights_ih) / sizeof(float), f0);
+    fread(buffer2, sizeof(float), sizeof(weights_ih) / sizeof(float), f1);
     for (int i = 0; i < 4; i++)
     {
-        printf("%f\n", *(buffer2 + i));
+        printf("%f\n", *(buffe#ir2 + i));
     }
-    fclose(f0);
+    fclose(f1);*/
 
     /*int written  = 0;
     //save weights_ih in xor/save_weights_bias/weights_ih.data
@@ -54,7 +64,7 @@ void save_weights_bias()
         printf("%f\n", *(p + i));
     }
     fclose(f0);*/
-    
+    /*
     //save weights_ho in xor/save_weights_bias/weights_ho.data
     int written = 0;
     FILE *f1 = fopen("xor/save_weights_bias/weights_ho.data", "w");
@@ -80,7 +90,7 @@ void save_weights_bias()
     if (written == 0) {
         printf("Error during writing to file !");
     }
-    fclose(f3);
+    fclose(f3);*/
 }
 
 
