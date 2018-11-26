@@ -24,19 +24,57 @@ float learning_rate = 0.2;
 
 void save_weights_bias()
 {
-    save_matrix("xor/save_weights_bias/save_weights_ih.data", weights_ih, sizeof(weights_ih) / sizeof(float));
+    save_matrix("xor/save_weights_bias/save_weights_ih.data", weights_ih, 
+    sizeof(weights_ih) / sizeof(float));
+    save_matrix("xor/save_weights_bias/save_weights_ho.data", weights_ho, 
+    sizeof(weights_ho) / sizeof(float));
+    save_matrix("xor/save_weights_bias/save_bias_hidden.data", bias_hidden,
+    sizeof(bias_hidden) / sizeof(float));
+    save_matrix("xor/save_weights_bias/save_bias_output.data", bias_output,
+    sizeof(bias_output) / sizeof(float)); 
 }
 
 void get_weights_bias()
 {
+    //Get weights_ih
     float *buffer = malloc(sizeof(weights_ih));
-    get_matrix(buffer, "xor/save_weights_bias/save_weights_ih.data", sizeof(weights_ih) / sizeof(float));
+    get_matrix(buffer, "xor/save_weights_bias/save_weights_ih.data", 
+    sizeof(weights_ih) / sizeof(float));
     for (size_t i = 0; i < sizeof(weights_ih) / sizeof(float); i++)
     {
         weights_ih[i] = *(buffer + i);
     }
     free(buffer);
 
+    //Get weight_ho
+    buffer = malloc(sizeof(weights_ho));
+    get_matrix(buffer, "xor/save_weights_bias/save_weights_ho.data", 
+    sizeof(weights_ho) / sizeof(float));
+    for (size_t i = 0; i < sizeof(weights_ho) / sizeof(float); i++)
+    {
+        weights_ho[i] = *(buffer + i);
+    }
+    free(buffer);
+
+    //Get bias_hidden
+    buffer = malloc(sizeof(bias_hidden));
+    get_matrix(buffer, "xor/save_weights_bias/save_bias_hidden.data", 
+    sizeof(bias_hidden) / sizeof(float));
+    for (size_t i = 0; i < sizeof(bias_hidden) / sizeof(float); i++)
+    {
+        bias_hidden[i] = *(buffer + i);
+    }
+    free(buffer);
+
+    //Get bias_output
+    buffer = malloc(sizeof(bias_output));
+    get_matrix(buffer, "xor/save_weights_bias/save_bias_output.data", 
+    sizeof(bias_output) / sizeof(float));
+    for (size_t i = 0; i < sizeof(bias_output) / sizeof(float); i++)
+    {
+        bias_output[i] = *(buffer + i);
+    }
+    free(buffer);
 }
 
 void init()
@@ -185,7 +223,6 @@ void train(unsigned long nb_iterations)
         i += 1;
     } while (i < 100);//while true
     save_weights_bias();
-    get_weights_bias();
 }
 void xor()
 {
@@ -203,6 +240,36 @@ void xor()
     //train until the good guess
     train(time);
     
+    inputs[0] = 0.0;
+    inputs[1] = 0.0;
+    feed_forward();
+    printf("0 xor 0 : ");
+    printMatrix(output,1,1);
+
+    inputs[0] = 0.0;
+    inputs[1] = 1.0;
+    feed_forward();
+    printf("0 xor 1 : ");
+    printMatrix(output,1,1);
+
+    inputs[0] = 1.0;
+    inputs[1] = 0.0;
+    feed_forward();
+    printf("1 xor 0 : ");
+    printMatrix(output,1,1);
+
+
+    inputs[0] = 1.0;
+    inputs[1] = 1.0;
+    feed_forward();
+    printf("1 xor 1 : ");
+    printMatrix(output,1,1);
+
+    //Test with saved matrix
+    printf("Test with saved matrix\n");
+    init();
+    get_weights_bias();
+
     inputs[0] = 0.0;
     inputs[1] = 0.0;
     feed_forward();
