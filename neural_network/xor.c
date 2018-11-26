@@ -24,22 +24,22 @@ float learning_rate_xor = 0.2;
 
 void save_weights_bias_xor()
 {
-    save_matrix("neural_network/save_weights_bias/xor/save_weights_ih_xor.data", weights_ih_xor, 
-    sizeof(weights_ih_xor) / sizeof(float));
-    save_matrix("neural_network/save_weights_bias/xor/save_weights_ho_xor.data", weights_ho_xor, 
-    sizeof(weights_ho_xor) / sizeof(float));
-    save_matrix("neural_network/save_weights_bias/xor/save_bias_hidden_xor.data", bias_hidden_xor,
-    sizeof(bias_hidden_xor) / sizeof(float));
-    save_matrix("neural_network/save_weights_bias/xor/save_bias_output_xor.data", bias_output_xor,
-    sizeof(bias_output_xor) / sizeof(float)); 
+    save_matrix("neural_network/save_weights_bias/xor/save_weights_ih_xor.data"
+    , weights_ih_xor, sizeof(weights_ih_xor) / sizeof(float));
+    save_matrix("neural_network/save_weights_bias/xor/save_weights_ho_xor.data"
+    , weights_ho_xor, sizeof(weights_ho_xor) / sizeof(float));
+    save_matrix("neural_network/save_weights_bias/xor/save_bias_hidden_xor.data"
+    , bias_hidden_xor, sizeof(bias_hidden_xor) / sizeof(float));
+    save_matrix("neural_network/save_weights_bias/xor/save_bias_output_xor.data"
+    , bias_output_xor, sizeof(bias_output_xor) / sizeof(float)); 
 }
 
 void get_weights_bias_xor()
 {
     //Get weights_ih_xor
     float *buffer = malloc(sizeof(weights_ih_xor));
-    get_matrix(buffer, "neural_network/save_weights_bias/xor/save_weights_ih_xor.data", 
-    sizeof(weights_ih_xor) / sizeof(float));
+    get_matrix(buffer, "neural_network/save_weights_bias/xor/save_weights_ih_xor.data"
+    , sizeof(weights_ih_xor) / sizeof(float));
     for (size_t i = 0; i < sizeof(weights_ih_xor) / sizeof(float); i++)
     {
         weights_ih_xor[i] = *(buffer + i);
@@ -48,8 +48,8 @@ void get_weights_bias_xor()
 
     //Get weight_ho
     buffer = malloc(sizeof(weights_ho_xor));
-    get_matrix(buffer, "neural_network/save_weights_bias/xor/save_weights_ho_xor.data", 
-    sizeof(weights_ho_xor) / sizeof(float));
+    get_matrix(buffer, "neural_network/save_weights_bias/xor/save_weights_ho_xor.data"
+    , sizeof(weights_ho_xor) / sizeof(float));
     for (size_t i = 0; i < sizeof(weights_ho_xor) / sizeof(float); i++)
     {
         weights_ho_xor[i] = *(buffer + i);
@@ -58,8 +58,8 @@ void get_weights_bias_xor()
 
     //Get bias_hidden_xor
     buffer = malloc(sizeof(bias_hidden_xor));
-    get_matrix(buffer, "neural_network/save_weights_bias/xor/save_bias_hidden_xor.data", 
-    sizeof(bias_hidden_xor) / sizeof(float));
+    get_matrix(buffer, "neural_network/save_weights_bias/xor/save_bias_hidden_xor.data"
+    , sizeof(bias_hidden_xor) / sizeof(float));
     for (size_t i = 0; i < sizeof(bias_hidden_xor) / sizeof(float); i++)
     {
         bias_hidden_xor[i] = *(buffer + i);
@@ -68,8 +68,8 @@ void get_weights_bias_xor()
 
     //Get bias_output_xor
     buffer = malloc(sizeof(bias_output_xor));
-    get_matrix(buffer, "neural_network/save_weights_bias/xor/save_bias_output_xor.data", 
-    sizeof(bias_output_xor) / sizeof(float));
+    get_matrix(buffer, "neural_network/save_weights_bias/xor/save_bias_output_xor.data"
+    , sizeof(bias_output_xor) / sizeof(float));
     for (size_t i = 0; i < sizeof(bias_output_xor) / sizeof(float); i++)
     {
         bias_output_xor[i] = *(buffer + i);
@@ -132,8 +132,8 @@ void feed_backward_xor()
     // gradient_derivative <- 1 - output_xor
     subtract(gradient_derivative_ho,1,1,one_col_matrix_ho,1,1,output_xor,1,1); 
     //gradient_derivative_ho <- output_xor . gradient_derivative_ho
-    elementWise(gradient_derivative_ho,1,1,output_xor,1,1,gradient_derivative_ho,1,
-    1); 
+    elementWise(gradient_derivative_ho,1,1,output_xor,1,1,gradient_derivative_ho
+    ,1, 1); 
     // gradient_ho <- gradient_ho . gradient_derivative_ho
     elementWise(gradient_ho,1,1,gradient_ho,1,1,gradient_derivative_ho,1,1); 
     float hidden_xor_tr[2];//output_xor transposed
@@ -153,8 +153,8 @@ void feed_backward_xor()
     float one_col_matrix_ih[] = {1, 1};
     // gradient_derivative_ih <- 1 - hidden_xor
     subtract(gradient_derivative_ih,2,1,one_col_matrix_ih,2,1,hidden_xor,2,1); 
-    elementWise(gradient_derivative_ih,2,1,hidden_xor,2,1,gradient_derivative_ih,2,
-    1); //gradient_derivative_ih <- hidden_xor . gradient_derivative_ih
+    elementWise(gradient_derivative_ih,2,1,hidden_xor,2,1,gradient_derivative_ih
+    ,2,1); //gradient_derivative_ih <- hidden_xor . gradient_derivative_ih
     // gradient_ih <- gradient_ih . gradient_derivative_ih
     elementWise(gradient_ih,2,1,gradient_ih,2,1,gradient_derivative_ih,2,1);
     float inputs_xor_tr[2];//input transposed 

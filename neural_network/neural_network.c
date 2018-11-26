@@ -6,40 +6,59 @@
 #include <time.h>
 #include "file.h"
 
-float inputs[2];
-float hidden[2];
-float output[1];
-float target[1];
+// name_of_name_r = number of columns of the matrix
+// name_of_name_c = number of columns of the matrix
+//Inputs layer
+#define inputs_r 2
+#define inputs_c 1
+float const inputs[inputs_r * inputs_c];
+//Hidden layer
+int const hidden_r = 2;
+int const hidden_c = 1;
+float hidden[hidden_r * hidden_c];
+//Output Layer
+int const output_r = 1;
+//float inputs[inputs_r * inputs_c];
+int const output_c = 1;
+float output[output_r * output_c];
+//Target
+float target[output_r * output_c];
+//Weights between inputs and hidden
+int const weights_ih_r = hidden_r;
+int const weights_ih_c = inputs_r;
+float weights_ih[weights_ih_r * weights_ih_c];
+//Weights between hidden and output
+int const weights_ho_r = output_r;
+int const weights_ho_c = hidden_r;
+float weights_ho[weights_ho_r * weights_ho_c];
+//Bias hidden
+float bias_hidden[hidden_r * hidden_c];
+//Bias hidden
+float bias_output[output_r * output_c];
 
-float weights_ih[4];
-float weights_ho[2];
-
-float bias_hidden[2];
-float bias_output[1];
-
-float error_output[1];
-float error_hidden[2];
+float error_output[output_r * output_c];
+float error_hidden[hidden_r * hidden_c];
 
 float learning_rate = 0.2;
 
 void save_weights_bias()
 {
-    save_matrix("neural_network/save_weights_bias/neural_network/save_weights_ih.data", weights_ih, 
-    sizeof(weights_ih) / sizeof(float));
-    save_matrix("neural_network/save_weights_bias/neural_network/save_weights_ho.data", weights_ho, 
-    sizeof(weights_ho) / sizeof(float));
-    save_matrix("neural_network/save_weights_bias/neural_network/save_bias_hidden.data", bias_hidden,
-    sizeof(bias_hidden) / sizeof(float));
-    save_matrix("neural_network/save_weights_bias/neural_network/save_bias_output.data", bias_output,
-    sizeof(bias_output) / sizeof(float)); 
+    save_matrix("neural_network/save_weights_bias/neural_network/save_weights_ih.data"
+    , weights_ih, sizeof(weights_ih) / sizeof(float));
+    save_matrix("neural_network/save_weights_bias/neural_network/save_weights_ho.data"
+    , weights_ho, sizeof(weights_ho) / sizeof(float));
+    save_matrix("neural_network/save_weights_bias/neural_network/save_bias_hidden.data"
+    , bias_hidden, sizeof(bias_hidden) / sizeof(float));
+    save_matrix("neural_network/save_weights_bias/neural_network/save_bias_output.data"
+    , bias_output, sizeof(bias_output) / sizeof(float)); 
 }
 
 void get_weights_bias()
 {
     //Get weights_ih
     float *buffer = malloc(sizeof(weights_ih));
-    get_matrix(buffer, "neural_network/save_weights_bias/neural_network/save_weights_ih.data", 
-    sizeof(weights_ih) / sizeof(float));
+    get_matrix(buffer, "neural_network/save_weights_bias/neural_network/save_weights_ih.data"
+    , sizeof(weights_ih) / sizeof(float));
     for (size_t i = 0; i < sizeof(weights_ih) / sizeof(float); i++)
     {
         weights_ih[i] = *(buffer + i);
@@ -48,8 +67,8 @@ void get_weights_bias()
 
     //Get weight_ho
     buffer = malloc(sizeof(weights_ho));
-    get_matrix(buffer, "neural_network/save_weights_bias/neural_network/save_weights_ho.data", 
-    sizeof(weights_ho) / sizeof(float));
+    get_matrix(buffer, "neural_network/save_weights_bias/neural_network/save_weights_ho.data"
+    , sizeof(weights_ho) / sizeof(float));
     for (size_t i = 0; i < sizeof(weights_ho) / sizeof(float); i++)
     {
         weights_ho[i] = *(buffer + i);
@@ -58,8 +77,8 @@ void get_weights_bias()
 
     //Get bias_hidden
     buffer = malloc(sizeof(bias_hidden));
-    get_matrix(buffer, "neural_network/save_weights_bias/neural_network/save_bias_hidden.data", 
-    sizeof(bias_hidden) / sizeof(float));
+    get_matrix(buffer, "neural_network/save_weights_bias/neural_network/save_bias_hidden.data"
+    , sizeof(bias_hidden) / sizeof(float));
     for (size_t i = 0; i < sizeof(bias_hidden) / sizeof(float); i++)
     {
         bias_hidden[i] = *(buffer + i);
@@ -68,8 +87,8 @@ void get_weights_bias()
 
     //Get bias_output
     buffer = malloc(sizeof(bias_output));
-    get_matrix(buffer, "neural_network/save_weights_bias/neural_network/save_bias_output.data", 
-    sizeof(bias_output) / sizeof(float));
+    get_matrix(buffer, "neural_network/save_weights_bias/neural_network/save_bias_output.data"
+    , sizeof(bias_output) / sizeof(float));
     for (size_t i = 0; i < sizeof(bias_output) / sizeof(float); i++)
     {
         bias_output[i] = *(buffer + i);
