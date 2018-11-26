@@ -9,36 +9,36 @@
 // name_of_name_r = number of columns of the matrix
 // name_of_name_c = number of columns of the matrix
 //Inputs layer
-#define inputs_r 2
-#define inputs_c 1
-float const inputs[inputs_r * inputs_c];
+int inputs_r = 2;
+int inputs_c = 1;
+float inputs[2];
 //Hidden layer
-int const hidden_r = 2;
-int const hidden_c = 1;
-float hidden[hidden_r * hidden_c];
+int hidden_r = 2;
+int hidden_c = 1;
+float hidden[2];
 //Output Layer
-int const output_r = 1;
-//float inputs[inputs_r * inputs_c];
-int const output_c = 1;
-float output[output_r * output_c];
+int output_r = 1;
+int output_c = 1;
+float output[1];
 //Target
-float target[output_r * output_c];
+float target[1];
 //Weights between inputs and hidden
-int const weights_ih_r = hidden_r;
-int const weights_ih_c = inputs_r;
-float weights_ih[weights_ih_r * weights_ih_c];
+int weights_ih_r = 2;// = hidden_r
+int weights_ih_c = 2;// = inputs_r
+float weights_ih[2 * 2];//hidden_r * inputs_r
 //Weights between hidden and output
-int const weights_ho_r = output_r;
-int const weights_ho_c = hidden_r;
-float weights_ho[weights_ho_r * weights_ho_c];
+int weights_ho_r = 1;// = output_r
+int weights_ho_c = 2;// = hidden_r
+float weights_ho[1 * 2];//output_r * hidden_r
 //Bias hidden
-float bias_hidden[hidden_r * hidden_c];
-//Bias hidden
-float bias_output[output_r * output_c];
-
-float error_output[output_r * output_c];
-float error_hidden[hidden_r * hidden_c];
-
+float bias_hidden[2];//same size as hidden
+//Bias output
+float bias_output[1];//same size as output
+//Error of the hidden layer
+float error_hidden[2];//same size as hidden
+//Error of the output layer
+float error_output[1];//same size as output
+//Learning rate
 float learning_rate = 0.2;
 
 void save_weights_bias()
@@ -98,22 +98,22 @@ void get_weights_bias()
 
 void init()
 {
-    initMatrix(weights_ih,2,2); //weigths inputs -> hidden
-    initMatrix(weights_ho,1,2); //weigths hidden -> output
-    initMatrix(bias_hidden,2,1); 
-    initMatrix(bias_output,1,1);
+    initMatrix(weights_ih, weights_ih_r, weights_ih_c);//weigths inputs -> hidden
+    initMatrix(weights_ho, weights_ho_r, weights_ho_c);//weigths hidden -> output
+    initMatrix(bias_hidden,hidden_r,hidden_c); 
+    initMatrix(bias_output,output_r,output_c);
 }
 
 void feed_forward()
 {
     //from inputs to hidden
     multiply(hidden,2,1,weights_ih,2,2,inputs,2,1);
-    add(hidden,2,1,hidden,2,1,bias_hidden,2,1);
+    add(hidden, hidden, bias_hidden, hidden_r * hidden_c);
     sigmoid_arr(hidden,2,1);
     
     //from hidden to output
     multiply(output,1,1,weights_ho,1,2,hidden,2,1);
-    add(output,1,1,output,1,1,bias_output,1,1);
+    add(output, output, bias_output, output_r * output_c);
     sigmoid_arr(output,1,1);
 }
 
@@ -121,7 +121,7 @@ void get_error()
 {
     float weights_ho_tr[2];
     //calcul of output error : error_output = target - output
-    subtract(error_output,1,1,target,1,1,output,1,1);
+    subtract(error_output, target, output, output_r * output_c);
     
     //(calcul of hidden layers errors : error_hidden = weights_ho_tr * 
     //error_output
@@ -149,7 +149,7 @@ void feed_backward()
     multiplyByScalar(learning_rate,gradient_ho,1,1,error_output,1,1); 
     float one_col_matrix_ho[] = {1};
     // gradient_derivative <- 1 - output
-    subtract(gradient_derivative_ho,1,1,one_col_matrix_ho,1,1,output,1,1); 
+    subtract(gradient_derivative_ho, one_col_matrix_ho, output, output_r * output_c); 
     //gradient_derivative_ho <- output . gradient_derivative_ho
     elementWise(gradient_derivative_ho,1,1,output,1,1,gradient_derivative_ho,1,
     1); 
@@ -162,8 +162,8 @@ void feed_backward()
     
     //Update weights_ho, bias_ho (bias_output)
     // weights_ho <- delta_weight_ho + weights_ho
-    add(weights_ho,1,2,weights_ho,1,2,delta_weight_ho,1,2); 
-    add(bias_output,1,1,bias_output,1,1,gradient_ho,1,1);
+    add(weights_ho, weights_ho, delta_weight_ho, weights_ho_r * weights_ho_c); 
+    add(bias_output, bias_output, gradient_ho, output_r * output_c);
 
     //Calculate the delta_weights_ih = (learning_rate * error_hidden)
     //. (hidden . (1 - hidden)) * input_tr
@@ -171,7 +171,7 @@ void feed_backward()
     multiplyByScalar(learning_rate,gradient_ih,2,1,error_hidden,2,1); 
     float one_col_matrix_ih[] = {1, 1};
     // gradient_derivative_ih <- 1 - hidden
-    subtract(gradient_derivative_ih,2,1,one_col_matrix_ih,2,1,hidden,2,1); 
+    subtract(gradient_derivative_ih, one_col_matrix_ih, hidden, hidden_r * hidden_c); 
     elementWise(gradient_derivative_ih,2,1,hidden,2,1,gradient_derivative_ih,2,
     1); //gradient_derivative_ih <- hidden . gradient_derivative_ih
     // gradient_ih <- gradient_ih . gradient_derivative_ih
@@ -183,9 +183,8 @@ void feed_backward()
     
     //Update of weights_ih, bias_ih (bias_hidden)
     // weights_ih <- delta_weight_ih + weights_ih
-    add(weights_ih,2,2,weights_ih,2,2,delta_weight_ih,2,2); 
-    add(bias_hidden,2,1,bias_hidden,2,1,gradient_ih,2,1);
-    
+    add(weights_ih, weights_ih, delta_weight_ih, weights_ih_r * weights_ih_c); 
+    add(bias_hidden, bias_hidden, gradient_ih, hidden_r * hidden_c);   
 }
 
 void train(unsigned long nb_iterations)

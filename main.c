@@ -17,8 +17,9 @@ int main(int argc, char *argv[])
     //char ask_img_op = "img_op";
     if (strcmp(argv[1],"xor") == 0) 
     {
-        srand(time(NULL));
-        xor();
+        puts("Temporaire a remettre : utiliser nn a la place de xor");
+        //srand(time(NULL));
+        //xor();
     }
     else if(strcmp(argv[1], "nn") == 0)
     {

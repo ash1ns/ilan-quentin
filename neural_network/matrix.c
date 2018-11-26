@@ -5,58 +5,24 @@
 #include <time.h>
 //arr[row * nbColumn + column]
 
-void copy(float res[], size_t res_row, size_t res_col, float arr[], size_t 
-arr_row, size_t arr_col)
+void copy(float res[], float arr[], size_t len)
 {
-    if (arr_col != res_col || res_row != arr_row)
-        errx(1,"copy -> Wrong size!");
-    for (size_t i = 0; i < res_row; i++)
-    {
-        for (size_t j = 0; j < res_row; j++)
-        {
-            res[i * res_col + j] = arr[i * arr_col + j];
-        }
-    }   
+    for (size_t i = 0; i < len; i++)
+        res[i] = arr[i];
 }
 
-//arr1 = arr1 + arr2
-void add(float res[], size_t res_row, size_t res_col, float arr1[], size_t 
-arr1_row, size_t arr1_col, float arr2[], size_t arr2_row, size_t arr2_col)
+//res = arr1 + arr2
+void add(float res[], float arr1[], float arr2[], size_t len)
 {
-    if (arr1_row != arr2_row || arr1_col != arr2_col || res_row != arr1_row || 
-    res_col != arr1_col)
-    {	
-         errx(1,"add -> Wrong size!");
-    }
-    
-    for (size_t row = 0; row < res_row; row++) 
-    {
-        for (size_t col = 0; col < res_col; col++)
-	{
-            res[row * res_col + col] = arr1[row * arr1_col + col] 
-            + arr2[row * arr2_col + col];
-    	}
-    }
+    for (size_t i = 0; i < len; i++) 
+        res[i] = arr1[i] + arr2[i];
 }
 
 //res = arr1 - arr2
-void subtract(float res[], size_t res_row, size_t res_col, float arr1[], size_t
-arr1_row, size_t arr1_col, float arr2[], size_t arr2_row, size_t arr2_col)
+void subtract(float res[], float arr1[], float arr2[], size_t len)
 {
-    if (arr1_row != arr2_row || arr1_col != arr2_col || res_row != arr1_row || 
-    res_col != arr1_col)
-    {	
-         errx(1,"subtract -> Wrong size!");
-    }
-    
-    for (size_t row = 0; row < res_row; row++) 
-    {
-        for (size_t col = 0; col < res_col; col++)
-	{
-            res[row * res_col + col] = arr1[row * arr1_col + col] 
-            - arr2[row * arr2_col + col];
-    	}
-    }
+    for (size_t i = 0; i < len; i++) 
+        res[i] = arr1[i] - arr2[i];
 }
 
 //res = arr1 * lr
