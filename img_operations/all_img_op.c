@@ -64,7 +64,7 @@ void all_img_op(char *argv[])
 
     //Make segmentation
     int mat2[size];
-    segment(mat, (size_t)height, (size_t)width, mat2);  
+    segment(mat, (size_t)height, (size_t)width, mat2);
     
 
     // begin modif
