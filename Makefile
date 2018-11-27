@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -std=c99 -O3
 LDFLAGS =
 LDLIBS = `pkg-config --libs sdl` -lSDL_image -lm
 
-SRC = main.c neural_network/neural_network.c neural_network/matrix.c neural_network/file.c img_operations/all_img_op.c img_operations/display.c img_operations/grayscale_binarize.c img_operations/matrix_and_img.c img_operations/pixel_operations.c img_operations/segmentation.c
+SRC = main.c neural_network/neural_network.c neural_network/xor.c neural_network/matrix.c neural_network/file.c img_operations/all_img_op.c img_operations/display.c img_operations/grayscale_binarize.c img_operations/matrix_and_img.c img_operations/pixel_operations.c img_operations/segmentation.c
 OBJ = ${SRC:.c=.o}
 DEP = ${SRC:.c=.d}
 
