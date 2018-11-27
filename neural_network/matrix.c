@@ -26,20 +26,10 @@ void subtract(float res[], float arr1[], float arr2[], size_t len)
 }
 
 //res = arr1 * lr
-void multiplyByScalar(float k, float res[], size_t res_row, size_t res_col, 
-float arr[], size_t arr_row, size_t arr_col)
+void multiplyByScalar(float k, float res[], float arr[], size_t len)
 {
-    if (arr_col != res_col || res_row != arr_row)
-    {
-        errx(1, "multiplyByScalar -> Wrong size !");
-    }
-    for (size_t row = 0; row < res_row; row++)
-    {
-        for (size_t col = 0; col < res_col; col++)
-        {
-            res[row * res_col + col] = arr[row * arr_col + col] * k; 
-        }
-    }
+    for (size_t i = 0; i < len; i++)
+        res[i] = arr[i] * k;
 }
 
 //res = arr1 * arr2

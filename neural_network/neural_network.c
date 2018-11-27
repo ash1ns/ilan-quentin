@@ -146,7 +146,7 @@ void feed_backward()
     //Calculate the delta_weights_ho = (learning_rate * error_output) . 
     //(ouput . (1 - output)) * hidden_tr
     // gradient_ho <- learning_rate * error_output
-    multiplyByScalar(learning_rate,gradient_ho,1,1,error_output,1,1); 
+    multiplyByScalar(learning_rate, gradient_ho, error_output, output_r * output_c); 
     float one_col_matrix_ho[] = {1};
     // gradient_derivative <- 1 - output
     subtract(gradient_derivative_ho, one_col_matrix_ho, output, output_r * output_c); 
@@ -168,7 +168,7 @@ void feed_backward()
     //Calculate the delta_weights_ih = (learning_rate * error_hidden)
     //. (hidden . (1 - hidden)) * input_tr
     // gradient)_ih <- learning_rate * error_hidden
-    multiplyByScalar(learning_rate,gradient_ih,2,1,error_hidden,2,1); 
+    multiplyByScalar(learning_rate, gradient_ih, error_hidden, hidden_r * hidden_c); 
     float one_col_matrix_ih[] = {1, 1};
     // gradient_derivative_ih <- 1 - hidden
     subtract(gradient_derivative_ih, one_col_matrix_ih, hidden, hidden_r * hidden_c); 
