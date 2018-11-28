@@ -25,6 +25,10 @@ int main(int argc, char *argv[])
         srand(time(NULL));
         neural_network();
     }
+    else if (strcmp(argv[1], "save") == 0)
+    {
+        //TODO
+    }
     else
     {
         all_img_op(argv);

@@ -5,6 +5,7 @@
 #include "matrix.h"
 #include <time.h>
 #include "file.h"
+#include "../img_operations/save_data.h"
 
 // name_of_name_r = number of columns of the matrix
 // name_of_name_c = number of columns of the matrix
@@ -50,6 +51,13 @@ float hidden_tr[2];
 float inputs_tr[2];
 //Weights_ho_tr
 float weights_ho_tr[2];
+
+//Training data
+int width_letter = 28;
+int height_letter = 28;
+int number_of_letters = 1; //Change !!!
+float all_training_data[28 * 28 * 1];
+
 void save_weights_bias()
 {
     save_matrix("neural_network/save_weights_bias/neural_network/save_weights_ih.data"
@@ -103,6 +111,24 @@ void get_weights_bias()
         bias_output[i] = *(buffer + i);
     }
     free(buffer);
+}
+
+//Get from a file  and fill the training data array
+void get_training_data()
+{
+    float *buffer = malloc(sizeof(all_training_data));
+    get_letters_from_file("training.data", buffer, number_of_letters);
+    for (size_t i = 0; i < sizeof(all_training_data) / sizeof(float); i++)
+        all_training_data[i] = *(buffer + i);
+    free(buffer);
+}
+
+//Get one letter in pos from all training data array
+void get_one_letter(float letter[], size_t pos)
+{
+    pos = width_letter * height_letter * pos;
+    for (int i = 0; i < height_letter * width_letter; i++, pos++)
+        letter[i] = all_training_data[pos];
 }
 
 void init()
@@ -192,6 +218,7 @@ void feed_backward()
 
 void train(unsigned long nb_iterations)
 {
+    get_training_data();//Fill the training data matrix;
     int i = 0;
     do {
         init();
@@ -245,8 +272,16 @@ void train(unsigned long nb_iterations)
     } while (i < 100);//while true
     save_weights_bias();
 }
+
 void neural_network()
 {
+    //Save training data before using it
+    get_training_data();
+    float letter[height_letter * width_letter];
+    get_one_letter(letter, 0);
+    printMatrixInt(letter, height_letter, width_letter);
+
+    /*
     //train for the first time
     unsigned long time;
     puts("How many iterations ?");
@@ -259,60 +294,6 @@ void neural_network()
     }
     
     //train until the good guess
-    train(time);
-    
-    inputs[0] = 0.0;
-    inputs[1] = 0.0;
-    feed_forward();
-    printf("0 xor 0 : ");
-    printMatrix(output, output_r, output_c);
-
-    inputs[0] = 0.0;
-    inputs[1] = 1.0;
-    feed_forward();
-    printf("0 xor 1 : ");
-    printMatrix(output, output_r, output_c);
-
-    inputs[0] = 1.0;
-    inputs[1] = 0.0;
-    feed_forward();
-    printf("1 xor 0 : ");
-    printMatrix(output,output_r, output_c);
-
-
-    inputs[0] = 1.0;
-    inputs[1] = 1.0;
-    feed_forward();
-    printf("1 xor 1 : ");
-    printMatrix(output, output_r, output_c);
-
-    //Test with saved matrix
-    printf("Test with saved matrix\n");
-    init();
-    get_weights_bias();
-
-    inputs[0] = 0.0;
-    inputs[1] = 0.0;
-    feed_forward();
-    printf("0 xor 0 : ");
-    printMatrix(output,1,1);
-
-    inputs[0] = 0.0;
-    inputs[1] = 1.0;
-    feed_forward();
-    printf("0 xor 1 : ");
-    printMatrix(output, output_r, output_c);
-
-    inputs[0] = 1.0;
-    inputs[1] = 0.0;
-    feed_forward();
-    printf("1 xor 0 : ");
-    printMatrix(output, output_r, output_c);
-
-
-    inputs[0] = 1.0;
-    inputs[1] = 1.0;
-    feed_forward();
-    printf("1 xor 1 : ");
-    printMatrix(output, output_r, output_c);
+    //!\\Still training for xor 
+    train(time);*/
 }

@@ -18,7 +18,7 @@ void save_letters(char *path, int main_image[], size_t col, Rect input[], size_t
         size_t y1 = input[i].y1;
         size_t y2 = input[i].y2;
         // between [y1,y2]
-        for (size_t y = y1; y < y2; y++)
+        for (size_t y = y1; y <= y2; y++)
         {
              //values between [x1,x2]
             for (size_t x = x1; x <= x2; x++)
@@ -32,7 +32,9 @@ void save_letters(char *path, int main_image[], size_t col, Rect input[], size_t
                 index++;
             }
             if (index > size_letter)
+            {
                 break;
+            }
         }
         fwrite(letter, sizeof(float), size_letter, f);
     }
@@ -46,9 +48,5 @@ void get_letters_from_file(char *path, float *buffer, size_t nb_of_letters)
     size_t error = fread(buffer, sizeof(float), size, f);
     if (error != size)
         errx(1, "Reading error");
-
-    fclose(f);
-
-        
+    fclose(f); 
 }
-

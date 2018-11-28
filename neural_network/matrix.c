@@ -111,3 +111,15 @@ void printMatrix(float arr[], size_t row, size_t col)
         printf("\n");
     }
 }
+
+void printMatrixInt(float arr[], size_t row, size_t col)
+{
+    for (size_t i = 0; i < row; i++) 
+    {
+        for (size_t j = 0; j < col; j++)
+        {
+            printf("%i ", (int)arr[i * col + j]);
+        }
+        printf("\n");
+    }
+}
