@@ -55,8 +55,8 @@ float weights_ho_tr[2];
 //Training data
 int width_letter = 28;
 int height_letter = 28;
-int number_of_letters = 1; //Change !!!
-float all_training_data[28 * 28 * 1];
+int number_of_letters = 26; //Change !!!
+float all_training_data[28 * 28 * 26];
 
 void save_weights_bias()
 {
@@ -278,8 +278,11 @@ void neural_network()
     //Save training data before using it
     get_training_data();
     float letter[height_letter * width_letter];
-    get_one_letter(letter, 0);
-    printMatrixInt(letter, height_letter, width_letter);
+    for (int i = 0; i < number_of_letters; i++)
+    {
+        get_one_letter(letter, i);
+        printMatrixInt(letter, height_letter, width_letter);
+    }
 
     /*
     //train for the first time
