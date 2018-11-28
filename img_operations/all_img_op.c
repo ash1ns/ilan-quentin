@@ -8,6 +8,7 @@
 #include "pixel_operations.h"
 #include "matrix_and_img.h"
 #include "segmentation.h"
+#include "save_data.h"
 // begin modif
 #include "rect.h"
 // end modif
@@ -84,7 +85,10 @@ void all_img_op(char *argv[])
 
     // get the array of rect of all characters
     size_t rect_array_length = get_Rect(mat2, row, col, matrect);
-    
+
+    //Save letters in a binary file
+    save_letters("training.data", mat2, col, matrect, rect_array_length);
+
     // Print the array of rect in a file
     write_rect_array(mat2, col, matrect, rect_array_length);
 
