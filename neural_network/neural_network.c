@@ -10,35 +10,35 @@
 // name_of_name_r = number of columns of the matrix
 // name_of_name_c = number of columns of the matrix
 //Inputs layer
-int inputs_r = 2;
+int inputs_r = 784; 
 int inputs_c = 1;
-float inputs[2];
+float inputs[784 * 1];
 //Hidden layer
-int hidden_r = 2;
+int hidden_r = 15;
 int hidden_c = 1;
-float hidden[2];
+float hidden[15 * 1];
 //Output Layer
-int output_r = 1;
+int output_r = 62;
 int output_c = 1;
-float output[1];
+float output[62 * 1];
 //Target
-float target[1];
+float target[62];
 //Weights between inputs and hidden
-int weights_ih_r = 2;// = hidden_r
-int weights_ih_c = 2;// = inputs_r
-float weights_ih[2 * 2];//hidden_r * inputs_r
+int weights_ih_r = 15;// = hidden_r
+int weights_ih_c = 784;// = inputs_r
+float weights_ih[15 * 784];//hidden_r * inputs_r
 //Weights between hidden and output
-int weights_ho_r = 1;// = output_r
-int weights_ho_c = 2;// = hidden_r
-float weights_ho[1 * 2];//output_r * hidden_r
+int weights_ho_r = 62;// = output_r
+int weights_ho_c = 15;// = hidden_r
+float weights_ho[62 * 15];//output_r * hidden_r
 //Bias hidden
-float bias_hidden[2];//same size as hidden
+float bias_hidden[15 * 1];//same size as hidden
 //Bias output
-float bias_output[1];//same size as output
+float bias_output[62 * 1];//same size as output
 //Error of the hidden layer
-float error_hidden[2];//same size as hidden
+float error_hidden[15 * 1];//same size as hidden
 //Error of the output layer
-float error_output[1];//same size as output
+float error_output[62 * 1];//same size as output
 //Learning rate
 float learning_rate = 0.2;
 //One col matrix for error between inputs and hidden    
@@ -46,17 +46,17 @@ float one_col_matrix_ih[] = {1, 1};
 //One col matrix for error between hidden and output    
 float one_col_matrix_ho[] = {1};
 //Hidden transposed
-float hidden_tr[2];
+float hidden_tr[15 * 1]; //same size as hidden
 //Input transposed 
-float inputs_tr[2];
+float inputs_tr[784 * 1]; //same size as inputs
 //Weights_ho_tr
-float weights_ho_tr[2];
+float weights_ho_tr[62 * 15]; // = hidden_r * output_r 
 
 //Training data
 int width_letter = 28;
 int height_letter = 28;
-int number_of_letters = 26; //Change !!!
-float all_training_data[28 * 28 * 26];
+int number_of_letters = 62; //a + A + 0 
+float all_training_data[28 * 28 * 62];
 
 void save_weights_bias()
 {
@@ -168,10 +168,10 @@ void feed_backward()
     get_error();
     float delta_weight_ho[2];
     float delta_weight_ih[4];
-    float gradient_ho[1];
-    float gradient_ih[2];
-    float gradient_derivative_ho[1];
-    float gradient_derivative_ih[2];
+    float gradient_ho[26];
+    float gradient_ih[15];
+    float gradient_derivative_ho[26];
+    float gradient_derivative_ih[15];
     /****   * matrix product
             . matrix element wise
             + matrix addition
@@ -273,8 +273,33 @@ void train(unsigned long nb_iterations)
     save_weights_bias();
 }
 
+
+char get_output(float output[])
+{
+    /* HOW OUTPUT[] WORKS ?
+
+    * a -> z are store from 0 to 25
+    * A -> Z are store from 26 -> 51
+    * 0 -> 9 are store from 52 -> 61
+    */
+    
+    float max = output[0];
+    size_t letter_pos = 0;
+    for (int i = 0; i <= 61; i++)
+    {
+        if (max < output[i])
+        {
+            max = output[i];
+            letter_pos = i;
+        }
+    }
+    if (letter_pos < 26) return letter_pos + 'a'; //a 
+    if (letter_pos < 52) return letter_pos - 26 + 'A'; //A
+    else return letter_pos - 52 + '0'; //figure
+}
 void neural_network()
 {
+    
     //Save training data before using it
     get_training_data();
     float letter[height_letter * width_letter];
@@ -284,7 +309,6 @@ void neural_network()
         printMatrixInt(letter, height_letter, width_letter);
         printf("\n");
     }
-
     /*
     //train for the first time
     unsigned long time;
@@ -299,5 +323,6 @@ void neural_network()
     
     //train until the good guess
     //!\\Still training for xor 
-    train(time);*/
+    train(time);
+    */
 }

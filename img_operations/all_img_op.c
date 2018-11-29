@@ -107,7 +107,7 @@ void all_img_op(char *argv[])
     resize(list);
 
     //Save letters in training.data
-    save_letters("training.data", list, 28 * 28, 26);
+    save_letters("training.data", list, 28 * 28, 62);
     printlist(list);
 
     free_list(list);
