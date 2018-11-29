@@ -5,7 +5,7 @@
 #include "matrix.h"
 #include <time.h>
 #include "file.h"
-#include "../img_operations/save_data.h"
+#include "save_data.h"
 
 // name_of_name_r = number of columns of the matrix
 // name_of_name_c = number of columns of the matrix
@@ -117,7 +117,7 @@ void get_weights_bias()
 void get_training_data()
 {
     float *buffer = malloc(sizeof(all_training_data));
-    get_letters_from_file("training.data", buffer, number_of_letters);
+    get_letters_from_file("training.data", buffer, width_letter * height_letter, number_of_letters);
     for (size_t i = 0; i < sizeof(all_training_data) / sizeof(float); i++)
         all_training_data[i] = *(buffer + i);
     free(buffer);
@@ -282,6 +282,7 @@ void neural_network()
     {
         get_one_letter(letter, i);
         printMatrixInt(letter, height_letter, width_letter);
+        printf("\n");
     }
 
     /*
